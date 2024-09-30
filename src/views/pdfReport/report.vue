@@ -173,7 +173,7 @@
             </div>
         </div>
         <!-- 第二页 -->
-        <div class='reports-box' >
+        <div class='reports-box'  :style='{height:pageTwoList[0].pdfPage*2375+"px"}'>
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >动态葡萄糖监测报告</div>
@@ -231,7 +231,7 @@
             </div>
         </div>
          <!-- 第三页 -->
-        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='item.height'>
+        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='item.height' :style='{height:item[0].pdfPage*2375+"px"}'>
             <div class='report-main-title-infos breakPage' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >动态葡萄糖监测报告</div>
@@ -248,7 +248,7 @@
                 </div>
             </div>
              <!-- 参数解释 -->
-            <div class='report-main-params' v-if='indexs==pdfDayData.length-1'>
+            <div class='report-main-params' v-if='indexs==pdfDayData.length-1' style='margin-top:30px;'>
                 <div class='report-main-params-title' >参数解释</div>
                 <div class='report-main-params-item' >
                     1.平均葡萄糖值（MG）：CGM 监测期间所有葡萄糖值的平均值，用于评价整体血糖水平。<br/>
@@ -633,6 +633,7 @@ export default {
                     max:max,
                     tir:this.handelRoundTir(result).normalRate,
                     height:720+event_length*55,
+                    pdfPage:Math.ceil((720+event_length*55)/2375),
                     events:all_events
                 })
             })
@@ -660,8 +661,10 @@ export default {
                     }
                     pdfHeight = pdfHeight-item.height
                 }
+                
             
             })
+            console.log(pdfDayData)
             this.pdfDayData = pdfDayData
         },
         // 血糖数据
@@ -808,6 +811,7 @@ export default {
     .reports-box{
         height:2375px;
         overflow: hidden;
+        position: relative;
     }
     .report-main{
         box-sizing: border-box;
