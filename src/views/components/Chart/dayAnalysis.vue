@@ -14,14 +14,14 @@
                 <div class='chart-box'>
                     <div class='analysis-info' >
                         <div class='analysis-info-item' >
-                            <div  :class='[dayInfo.avg>118.8?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
-                            <div  :class='[dayInfo.avg>6.6?"active":"","analysis-info-value"]' v-else>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mmol/L</span>  </div>
+                            <div  :class='[dayInfo.avg>=118.8?"active":"","analysis-info-value"]' v-if='unit=="mg/dL"'>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mg/dL</span>  </div>
+                            <div  :class='[dayInfo.avg>=6.6?"active":"","analysis-info-value"]' v-else>{{dayInfo.avg}} <span class='analysis-info-value-unit' >mmol/L</span>  </div>
                             <div class='analysis-info-label' >平均葡萄糖值（MG）</div>
                         </div>
                         <div class='analysis-info-item' >
                             
-                            <div  :class='[dayInfo.fluctate>79.2?"active":"","analysis-info-value"]'  v-if='unit=="mg/dL"'>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mg/dL</span></div>
-                            <div  :class='[dayInfo.fluctate>4.4?"active":"","analysis-info-value"]'  v-else>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mmol/L</span></div>
+                            <div  :class='[dayInfo.fluctate>=79.2?"active":"","analysis-info-value"]'  v-if='unit=="mg/dL"'>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mg/dL</span></div>
+                            <div  :class='[dayInfo.fluctate>=4.4?"active":"","analysis-info-value"]'  v-else>{{dayInfo.fluctate}} <span class='analysis-info-value-unit' >mmol/L</span></div>
                             <div class='analysis-info-label' >最大血糖波动</div>
                         </div>
                         <div class='analysis-info-item' >
@@ -31,12 +31,12 @@
                         </div>
                         <div class='analysis-info-item' >
                             
-                            <div :class='[dayInfo.lowTir>5?"active":"","analysis-info-value"]' >{{dayInfo.lowTir}} <span class='analysis-info-value-unit' >%</span></div>
+                            <div :class='[dayInfo.lowTir>=5?"active":"","analysis-info-value"]' >{{dayInfo.lowTir}} <span class='analysis-info-value-unit' >%</span></div>
                             <div class='analysis-info-label' >低于目标范围占比</div>
                         </div>
                         <div class='analysis-info-item' >
                         
-                            <div :class='[dayInfo.hightTir>25?"active":"","analysis-info-value"]' >{{dayInfo.hightTir}} <span class='analysis-info-value-unit' >%</span></div>
+                            <div :class='[dayInfo.hightTir>=25?"active":"","analysis-info-value"]' >{{dayInfo.hightTir}} <span class='analysis-info-value-unit' >%</span></div>
                             <div class='analysis-info-label' >高于目标范围占比</div>
                         </div>
                     </div>
