@@ -28,6 +28,9 @@ export default {
                 renderer: 'svg'
             },
             options:{
+                textStyle:{
+                    fontFamily:'MiLan-Regular'
+                },
                 axisPointer:{
                     triggerEmphasis:false
                 },

@@ -130,6 +130,9 @@ export default {
                 renderer: 'svg'
             },
             option: {
+                textStyle:{
+                    fontFamily:'MiLan-Regular'
+                },
                 grid:[
                     {   
                         show:true,
@@ -318,23 +321,19 @@ export default {
             if(dayInfo.resultValue.length>0){
                 let target =  dayInfo.target
                 let resultValue = _.compact(dayInfo.resultValue)
-                let fluctate = _.max(dayInfo.value) -  _.min(dayInfo.value) //最大波动
+                let filterArr = dayInfo.resultValue.filter(val => val >= 36 && val <= 540);
+                let fluctate = _.max(filterArr) -  _.min(filterArr) //最大波动
                 let avg = GlucoseUtils.calculateMeanCvGmi(resultValue).mean //平均值
-                let lowTir = null,hightTir=null
-                if(TIRUtils.getTIRResult(resultValue)){
-                    lowTir = TIRUtils.getTIRResult(resultValue).lowRate + TIRUtils.getTIRResult(resultValue).veryLowRate
-                    hightTir = TIRUtils.getTIRResult(resultValue).highRate + TIRUtils.getTIRResult(resultValue).veryHighRate
-                }
                 dayInfo.day = formatDate(dayInfo.day,'mm月dd日')
                 dayInfo.fluctate = unit=='mg/dL'?fluctate:GlucoseUtils.mgdlToMmol(fluctate);
                 dayInfo.avg = unit=='mg/dL'? Math.round(avg):GlucoseUtils.mgdlToMmol(avg);
-                dayInfo.lowTir = _.round(Number(lowTir)*100, 1);
-                dayInfo.hightTir =  _.round(Number(hightTir)*100, 1);
+                 dayInfo.hightTir = (Number(dayInfo.allTir.highRate)+Number(dayInfo.allTir.veryHighRate)).toFixed(1);
+                dayInfo.lowTir =   (Number(dayInfo.allTir.lowRate)+Number(dayInfo.allTir.veryLowRate)).toFixed(1);
                 
                 
                 // 图表数据
                 let xData = Array.from({length:60*24},(item, index) => index)
-                let max = GlucoseUtils.mgdlToMmol(dayInfo.max)<13.9?13.9: GlucoseUtils.mgdlToMmol(dayInfo.max)
+                let max = GlucoseUtils.mgdlToMmol(dayInfo.max)<14?14:30
                 if(unit != 'mg/dL'){
                     dayInfo.value = dayInfo.value.map(val => GlucoseUtils.mgdlToMmol(val));
                 }
@@ -367,7 +366,9 @@ export default {
                 }]
                 this.option.series[0].markLine.data = this.option.series[0].markLine.data.splice(0,2)
                 this.option.xAxis[0].data = xData
-                this.option.yAxis[0].max = unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(Math.ceil(max / 3) * 3):Math.ceil(max / 3) * 3
+                this.option.yAxis[0].max = unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(max):max
+                this.option.yAxis[0].min = unit == 'mg/dL'?36:2
+                this.option.yAxis[0].interval = unit == 'mg/dL'?(GlucoseUtils.mmolToMgdl(max)-36)/4:(max-2)/4
                 this.option.series[0].data = dayInfo.value
                 this.option.series[0].markLine.data[0].yAxis = target[0]
                 this.option.series[0].markLine.data[1].yAxis = target[1]

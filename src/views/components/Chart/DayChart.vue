@@ -31,6 +31,9 @@ export default {
                 renderer: 'svg'
             },
             option: {
+                textStyle:{
+                    fontFamily:'MiLan-Regular'
+                },
                 tooltip:{
                     show:true,
                     trigger:'axis',
@@ -74,7 +77,7 @@ export default {
             this.gridW = gridW
             let xData = Array.from({length:60*24},(item, index) => index)
             let max = data[0].max
-            max = GlucoseUtils.mgdlToMmol(max)<13.9?13.9: GlucoseUtils.mgdlToMmol(max)
+            max = GlucoseUtils.mgdlToMmol(max)<=14?14:30
             let unit = dayList[0].unit
             this.option = {
                 tooltip :{
@@ -194,7 +197,8 @@ export default {
                             show:false,
                             gridIndex:index,
                             min:0,
-                            max: unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(Math.ceil(max / 3) * 3):Math.ceil(max / 3) * 3
+                            max: unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(max):max,
+                            interval: unit == 'mg/dL'?GlucoseUtils.mmolToMgdl(max)/4:max/4
                     })
                     this.option.visualMap.push({
                         type: "piecewise",

@@ -173,7 +173,7 @@
             </div>
         </div>
         <!-- 第二页 -->
-        <div class='reports-box'  :style='{height:pageTwoList[0].pdfPage*2375+"px"}'>
+        <div class='reports-box'  :style='{height:pageTwoResultHeight*2375+"px"}'>
             <div class='report-main-title-infos' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >动态葡萄糖监测报告</div>
@@ -231,7 +231,8 @@
             </div>
         </div>
          <!-- 第三页 -->
-        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='item.height' :style='{height:item[0].pdfPage*2375+"px"}'>
+        <div v-if='pdfDayData.length>0&&pdfDayData[0].length>0' >
+        <div class='reports-box' v-for='(item,indexs) in pdfDayData' :key='item.height' :style='{height:pageThreePage*2375+"px"}'>
             <div class='report-main-title-infos breakPage' >
                 <img src="~@/assets/image/report-logo.png" alt="" class='report-logo' >
                 <div class='report-main-title' >动态葡萄糖监测报告</div>
@@ -264,6 +265,7 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </template>
 <script>
@@ -295,6 +297,8 @@ export default {
             pageTwoList:[],
             pdfDayData:[],
             eventList:[],
+            pageTwoResultHeight:1,
+            pageThreePage:1
         }
     },
      components: {
@@ -360,8 +364,7 @@ export default {
                                     let s_date = s.setHours(0,0,0)/1000
                                     let e_date = e.setHours(23,59,59)/1000
                                     if(arrayData.length>0){
-                                        this.handelTemplateDay(this.handleData(arrayData,s_date,e_date),this.handelEventDay(response.data.events),this.handelWarningDay(response.data.bg_events))
-                                        
+                                        this.handelTemplateDay(this.handleData(arrayData,s_date,e_date),this.handelEventDay(response.data.events),this.handelWarningDay(response.data.bg_events)) 
                                     }
                                   
                                 }
@@ -400,8 +403,8 @@ export default {
             const result = [];
 
             const seenTimes = new Set();
-            let levelLowInvalidMg = 36
-            let levelHighInvalidMg = 540
+            let levelLowInvalidMg = 20
+            let levelHighInvalidMg = 800
             let levelTooLowMg = 36
             let levelTooHighMg = 540
             data.forEach(item => {
@@ -418,6 +421,16 @@ export default {
                     result.push({
                     ...item,
                     value: levelTooHighMg,
+                    });
+                } else if (item.Value < levelLowInvalidMg) {
+                    result.push({
+                    ...item,
+                    value: null,
+                    });
+                } else if (item.Value > levelHighInvalidMg) {
+                    result.push({
+                    ...item,
+                    value: null,
                     });
                 } else {
                     result.push({
@@ -632,6 +645,7 @@ export default {
                     resultValue:_.compact(originValue),
                     max:max,
                     tir:this.handelRoundTir(result).normalRate,
+                    allTir:this.handelRoundTir(result),
                     height:720+event_length*55,
                     pdfPage:Math.ceil((720+event_length*55)/2375),
                     events:all_events
@@ -650,7 +664,9 @@ export default {
             dayList.forEach((item,index)=>{
                 if(pageTwoHeight-item.height>0){
                         this.pageTwoList.push(item) //第二页的内容
+                        this.pageTwoResultHeight = this.pageTwoList[0].pdfPage
                         pageTwoHeight = pageTwoHeight-item.height
+                       
                 }else{  //剩余的进行分页处理
                     if(pdfHeight-item.height>0){
                         pdfDayData[page].push(item)
@@ -659,12 +675,10 @@ export default {
                         page++
                         pdfDayData.push([item])
                     }
+                     this.pageThreePage = pdfDayData.length>0?pdfDayData[0][0].pdfPage:1
                     pdfHeight = pdfHeight-item.height
                 }
-                
-            
             })
-            console.log(pdfDayData)
             this.pdfDayData = pdfDayData
         },
         // 血糖数据
