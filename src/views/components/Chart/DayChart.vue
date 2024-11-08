@@ -80,6 +80,9 @@ export default {
             max = GlucoseUtils.mgdlToMmol(max)<=14?14:30
             let unit = dayList[0].unit
             this.option = {
+                textStyle:{
+                    fontFamily:'MiLan-Regular'
+                },
                 tooltip :{
                     show:true,
                     trigger:'axis',

@@ -212,6 +212,9 @@ export default {
                 ]
             },
             option:{
+                textStyle:{
+                    fontFamily:'MiLan-Regular'
+                },
                 axisPointer:{
                     triggerEmphasis:false
                 },
