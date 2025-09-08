@@ -686,7 +686,8 @@ export default {
             let BdatArray = _.cloneDeep(data)
             let originList = _.compact(_.map(BdatArray,'Value'))
             let bgInfo = GlucoseUtils.calculateMeanCvGmi(_.compact(_.map(BdatArray,'Value')))
-            bgInfo.mean = Math.round(bgInfo.mean)
+            // bgInfo.mean = Math.round(bgInfo.mean)
+            bgInfo.mean = bgInfo.mean.toFixed(0)
             let unit = this.unit
             if(unit=='mmol/L'){
                 bgInfo.mean = GlucoseUtils.mgdlToMmol(bgInfo.mean)
