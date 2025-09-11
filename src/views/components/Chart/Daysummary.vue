@@ -332,12 +332,12 @@ export default {
       list.forEach((item) => {
         let avg =
           _.compact(item.resultValue).length > 0
-            ? GlucoseUtils.calculateMeanCvGmi(_.compact(item.resultValue)).mean
+            ? GlucoseUtils.calculateMeanCvGmi(
+                _.compact(item.resultValue)
+              ).mean.toFixed(0)
             : null;
         xData.push(item.day);
-        avgList.push(
-          unit == "mg/dL" ? avg.toFixed(0) : GlucoseUtils.mgdlToMmol(avg)
-        ); //平均值
+        avgList.push(unit == "mg/dL" ? avg : GlucoseUtils.mgdlToMmol(avg)); //平均值
         tir.push({
           value: item.tir,
           label: {

@@ -479,12 +479,11 @@ export default {
           (val) => val >= 36 && val <= 540
         );
         let fluctate = _.max(filterArr) - _.min(filterArr); //最大波动
-        let avg = GlucoseUtils.calculateMeanCvGmi(resultValue).mean; //平均值
+        let avg = GlucoseUtils.calculateMeanCvGmi(resultValue).mean.toFixed(0); //平均值
         dayInfo.day = formatDate(dayInfo.day, "mm月dd日");
         dayInfo.fluctate =
           unit == "mg/dL" ? fluctate : GlucoseUtils.mgdlToMmol(fluctate);
-        dayInfo.avg =
-          unit == "mg/dL" ? avg.toFixed(0) : GlucoseUtils.mgdlToMmol(avg);
+        dayInfo.avg = unit == "mg/dL" ? avg : GlucoseUtils.mgdlToMmol(avg);
         dayInfo.hightTir = (
           Number(dayInfo.allTir.highRate) + Number(dayInfo.allTir.veryHighRate)
         ).toFixed(1);
