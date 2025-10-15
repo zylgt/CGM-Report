@@ -8,7 +8,7 @@
       </div>
       <div class="empty" v-show="dayInfo.resultValue.length <= 0">
         <img src="~@/assets/image/empty-icon.png" alt="" class="empty-icon" />
-        <div class="empty-text">暂无数据</div>
+        <div class="empty-text">NO Data</div>
       </div>
       <div class="analysis-box" v-show="dayInfo.resultValue.length > 0">
         <div class="chart-box">
@@ -34,7 +34,7 @@
                 {{ dayInfo.avg }}
                 <span class="analysis-info-value-unit">mmol/L</span>
               </div>
-              <div class="analysis-info-label">平均葡萄糖值（MG）</div>
+              <div class="analysis-info-label">Mean Glucose (MG)</div>
             </div>
             <div class="analysis-info-item">
               <div
@@ -57,7 +57,7 @@
                 {{ dayInfo.fluctate }}
                 <span class="analysis-info-value-unit">mmol/L</span>
               </div>
-              <div class="analysis-info-label">最大血糖波动</div>
+              <div class="analysis-info-label">Max Fluctuation</div>
             </div>
             <div class="analysis-info-item">
               <div
@@ -69,7 +69,7 @@
                 {{ dayInfo.tir }}
                 <span class="analysis-info-value-unit">%</span>
               </div>
-              <div class="analysis-info-label">目标范围内占比</div>
+              <div class="analysis-info-label">Time In Range</div>
             </div>
             <div class="analysis-info-item">
               <div
@@ -81,7 +81,7 @@
                 {{ dayInfo.lowTir }}
                 <span class="analysis-info-value-unit">%</span>
               </div>
-              <div class="analysis-info-label">低于目标范围占比</div>
+              <div class="analysis-info-label">Time Below Range</div>
             </div>
             <div class="analysis-info-item">
               <div
@@ -93,7 +93,7 @@
                 {{ dayInfo.hightTir }}
                 <span class="analysis-info-value-unit">%</span>
               </div>
-              <div class="analysis-info-label">高于目标范围占比</div>
+              <div class="analysis-info-label">Time Above Range</div>
             </div>
           </div>
           <t-chart
@@ -114,8 +114,8 @@
         highlight-current-row
         ref="singleTable"
       >
-        <el-table-column prop="ts" label="时间"></el-table-column>
-        <el-table-column prop="event" label="事件">
+        <el-table-column prop="ts" label="Time"></el-table-column>
+        <el-table-column prop="event" label="Event">
           <template slot-scope="scope">
             <div class="table-event-type">
               <img
@@ -193,24 +193,24 @@
               <span v-if="scope.row.event_type == 4">{{
                 scope.row.event_body.sleep_name
               }}</span>
-              <span v-if="scope.row.event_type == 5">指尖血</span>
+              <span v-if="scope.row.event_type == 5">Blood Glucose</span>
               <span v-if="scope.row.event_type == 6">{{
                 scope.row.event_body.custom_name
               }}</span>
-              <span v-if="scope.row.message_type == 'high'">高血糖</span>
-              <span v-if="scope.row.message_type == 'low'">低血糖</span>
-              <span v-if="scope.row.message_type == 'elow'">紧急低血糖</span>
+              <span v-if="scope.row.message_type == 'high'">High</span>
+              <span v-if="scope.row.message_type == 'low'">Low</span>
+              <span v-if="scope.row.message_type == 'elow'">Urgent low</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="event" label="记录详情">
+        <el-table-column prop="event" label="Record Details">
           <template slot-scope="scope">
             <div class="table-event-type">
               <span v-if="scope.row.event_type == 0">{{
                 scope.row.event_body.remark
               }}</span>
               <span v-if="scope.row.event_type == 1"
-                >{{ scope.row.event_body.total_minute }}分钟</span
+                >{{ scope.row.event_body.total_minute }}minutes</span
               >
               <span v-if="scope.row.event_type == 2">{{
                 scope.row.event_body.medicine_time_name
@@ -219,7 +219,7 @@
                 >{{ scope.row.event_body.insulin_value }}IU</span
               >
               <span v-if="scope.row.event_type == 4"
-                >{{ scope.row.event_body.total_minute }}分钟</span
+                >{{ scope.row.event_body.total_minute }}minutes</span
               >
               <span v-if="scope.row.event_type == 5">{{
                 scope.row.event_body.fingertipblood_name
@@ -234,7 +234,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="value" label="测量值">
+        <el-table-column prop="value" label="Glucose Level">
           <template slot-scope="scope">
             <div v-if="scope.row.value && scope.row.event_type != 5">
               {{ scope.row.value }}{{ unit }}
